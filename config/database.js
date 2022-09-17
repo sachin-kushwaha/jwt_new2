@@ -1,5 +1,6 @@
 const mongoose=require("mongoose");
-mongoose.connect("mongodb://localhost:27017/JWTlogin2",{useNewUrlParser:true}
+require("dotenv").config();
+mongoose.connect(process.env.mongoUri,{useNewUrlParser:true}
 
 ).then(()=>{
     console.log("connection is successful")

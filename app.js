@@ -5,7 +5,7 @@ const passport = require("passport");
 
 const app = express();
 
-const port =process.env.PORT || 6000;
+const port =process.env.port || 6000;
 require("./config/database");
 
 

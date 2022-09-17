@@ -1,3 +1,4 @@
+"use strict";
 
 require("dotenv").config();
 
@@ -33,7 +34,7 @@ router.post("/register", async (req, res) => {
       }
   
       //Encrypt user password
-      encryptedPassword = await bcrypt.hash(password, 10);
+      const encryptedPassword = await bcrypt.hash(password, 10);
   
       // Create user in our database
       const user = await User.create({
@@ -56,9 +57,10 @@ router.post("/register", async (req, res) => {
       user.token = token;
         console.log(user)
       // return new user
-      res.status(201).json(user);
+      res.status(201).json({user,token});
     } catch (err) {
       console.log(err);
+      res.status(500).json(err.message); 
     }
     // Our register logic ends here
   });
@@ -75,7 +77,7 @@ router.post("/register", async (req, res) => {
         res.status(400).send("All input is required");
       }
       // Validate if user exist in our database
-      const user = await User.findOne({ email });
+      const  user = await User.findOne({ email });
   
       if (user && (await bcrypt.compare(password, user.password))) {
         // Create token
@@ -91,11 +93,14 @@ router.post("/register", async (req, res) => {
         user.token = token;
   
         // user
-        res.status(200).json(user);
+
+        res.status(200).json({'access-token':token});
+        
       }
       res.status(400).send("Invalid Credentials");
     } catch (err) {
       console.log(err);
+      res.status(500).json({error_mesage:err.message})
     }
     // Our register logic ends here
   });
